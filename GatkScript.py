@@ -53,7 +53,7 @@ subprocess.call("./gatk FilterMutectCalls -R %s -min-allele-fraction .05 -V %s -
 
 print("\tFirst Mutect Filter Done")
 
-subprocess.call("bcftools view -i 'MIN(FORMAT/AF)>.05' %s > %s" %
+subprocess.call("bcftools view -i 'MAX(FORMAT/AF)>.05' %s > %s" %
                 (filteredVCF, f2VCF), shell=True)
 
 print("\tFive percent filter applied")
