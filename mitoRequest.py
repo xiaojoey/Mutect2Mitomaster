@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import subprocess
+import sys
 import os
 
-dir = "GATKDATA"
+dir = sys.argv[1]
 for filename in os.listdir(dir):
     editedName = dir + '/' + filename
     if ".bam" in filename and ".bai" not in filename:
