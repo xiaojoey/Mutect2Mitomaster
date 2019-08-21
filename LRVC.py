@@ -42,7 +42,7 @@ finalVCF = "%s.%s.vcf" % (sampleName, filterLevel)
 subprocess.call("bcftools view -i 'MAX(FORMAT/AF)>%s' %s/%s.raw.vcf > %s/%s" %
                 (filterLevel, resultDir, sampleName, resultDir, finalVCF), shell=True)
 
-subprocess.call("./gatk VariantsToTable -V %s/%s -F CHROM -F POS -F REF -F ALT -F TYPE -GF AF -O %s/%s.table" %
+subprocess.call("./gatk VariantsToTable -V %s/%s -F CHROM -F POS -F REF -F ALT -F TYPE -GF AF --show-filtered true -O %s/%s.table" %
                 (resultDir, finalVCF, resultDir, finalVCF), shell=True)
 
 subprocess.call("cd %s; bgzip %s ; tabix -p vcf %s.gz" %
