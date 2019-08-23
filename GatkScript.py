@@ -24,6 +24,7 @@ outputTable = "%s/%s.rg.table" % (resultDir, sampleName)
 rgBam = "%s/%s.rg.bam" % (resultDir, sampleName)
 recalBam = "%s/%s.rg.recal.bam" % (resultDir, sampleName)
 consensusFasta = "%s/%s_consensus.fasta" % (resultDir, sampleName)
+variantTable = "%s/variants.table" % resultDir
 
 subprocess.call(["ls", "-l"])
 
@@ -32,18 +33,9 @@ subprocess.call("./gatk AddOrReplaceReadGroups -I %s -R %s -O %s -LB nextera -PL
 
 print("\tAddOrReplaceReadGroups Done")
 
-subprocess.call("./gatk BaseRecalibrator -R %s -L chrM -I %s --known-sites %s -O %s" %
-                (genomeRef, rgBam, refSites, outputTable), shell=True)
-
-print("\tTable Made")
-
-subprocess.call("./gatk ApplyBQSR -R %s -I %s -bqsr %s -O %s" %
-                (genomeRef, rgBam, outputTable, recalBam), shell=True)
-
-print("\tRecal Complete")
 
 subprocess.call("./gatk Mutect2 -R %s -L chrM --mitochondria-mode true -I %s -O %s" %
-                (genomeRef, recalBam, rawVCF), shell=True)
+                (genomeRef, rgBam, rawVCF), shell=True)
 
 
 print("\tVariants Called")
@@ -53,10 +45,16 @@ subprocess.call("./gatk FilterMutectCalls -R %s -min-allele-fraction .05 -V %s -
 
 print("\tFirst Mutect Filter Done")
 
+
 subprocess.call("bcftools view -i 'MAX(FORMAT/AF)>.05' %s > %s" %
                 (filteredVCF, f2VCF), shell=True)
 
 print("\tFive percent filter applied")
+
+subprocess.call("./gatk VariantsToTable -V %s -F POS -F REF -F ALT -F TYPE -GF AF --show-filtered true -O %s" %
+                (f2VCF, variantTable), shell=True)
+
+print("\tVariantTable made")
 
 subprocess.call("bgzip %s ; tabix -p vcf %s.gz" %
                 (f2VCF, f2VCF), shell=True)
