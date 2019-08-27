@@ -6,7 +6,7 @@ import os
 
 inputBam = sys.argv[1]
 filterLevel = float(sys.argv[2])
-sampleName = inputBam.split('.bam')[0]
+sampleName = sys.argv[4]
 resultDir = sampleName + '_result'
 subprocess.call("mkdir %s" % resultDir, shell=True)
 
@@ -32,8 +32,8 @@ headerFile.close()
 
 reheaderFile = "%s.reheader.bam" % sampleName
 
-subprocess.call("samtools reheader %s.sam %s.bam > %s ; samtools index %s ; rm %s.sam" %
-                (sampleName, sampleName, reheaderFile, reheaderFile, sampleName), shell=True)
+subprocess.call("samtools reheader %s.sam %s > %s ; samtools index %s ; rm %s.sam" %
+                (sampleName, inputBam, reheaderFile, reheaderFile, sampleName), shell=True)
 
 subprocess.call("./gatk Mutect2 -R %s -L NC_012920.1 --mitochondria-mode  true -I %s -O %s/%s.raw.vcf; rm %s*" %
                 (mtRef, reheaderFile, resultDir, sampleName, reheaderFile), shell=True)

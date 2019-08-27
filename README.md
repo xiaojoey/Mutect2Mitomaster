@@ -12,5 +12,5 @@ Usage:
 ```
 python GatkScript.py bamFile
 python mitoRequest.py folderOfBamFiles
-python LRVC.py bamFile referenceFasta
+python LRVC.py bamFile filterLevel referenceFasta resultDir
 ```
