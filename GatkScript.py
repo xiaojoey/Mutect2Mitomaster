@@ -4,11 +4,26 @@ import sys
 import os
 
 inputBam = sys.argv[1]
-sampleName = inputBam.split('.bam')[0].split('/')[1]
+
+
+def getBamName(fileName):
+    splitList = fileName.split('/')
+    for i in range(len(splitList) - 1, -1, -1):
+        if splitList[i] != "":
+            return splitList[i]
+    raise Exception("\"%s\" is not a valid file name" % fileName)
+
+
+sampleName = getBamName(inputBam).split('.bam')[0]
 if not os.path.isdir("results"):
     os.mkdir("results")
 
 resultDir = "results/%s" % sampleName
+
+versionCounter = 2
+while os.path.isdir(resultDir):
+    resultDir = "results/%s%s" % (sampleName, versionCounter)
+    versionCounter += 1
 
 subprocess.call("mkdir %s" % resultDir, shell=True)
 print(sampleName)

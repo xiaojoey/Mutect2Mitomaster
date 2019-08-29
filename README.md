@@ -7,10 +7,13 @@ GatkScript.py is the main script and mitoRequest.py passes bam files in a direct
 
 LRVC.py is a script for PacBio Pbaligned CCS sequences. It modifies the header for the bam file to make the PacBio data compatible with the rest of the pipeline.
 
+bam2fasta.py converts all the bam files in a folder into fasta files. 
+
 Usage:
 
 ```
 python GatkScript.py bamFile
 python mitoRequest.py folderOfBamFiles
 python LRVC.py bamFile filterLevel referenceFasta resultDir
+python bam2fasta.py folderOfBamFiles
 ```
