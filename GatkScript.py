@@ -2,6 +2,7 @@ import subprocess
 import requests
 import sys
 import os
+import pandas as pd
 
 inputBam = sys.argv[1]
 
@@ -81,8 +82,8 @@ subprocess.call("cat %s | bcftools consensus %s.gz > %s" %
 
 print("\tconsensus generated")
 
-result = open(
-    "%s/%s_report.txt" % (resultDir, sampleName), "w")
+resultPath = "%s/%s_report.txt" % (resultDir, sampleName)
+result = open(resultPath, "w")
 try:
     response = requests.post("https://mitomap.org/mitomaster/websrvc.cgi", files={"file": open(
         consensusFasta), 'fileType': ('', 'sequences'), 'output': ('', 'detail')})
@@ -93,6 +94,16 @@ except requests.exceptions.HTTPError as err:
 except:
     print("Error")
 result.close()
+
+endPath = os.path.splitext(resultPath)[0] + "_revised.xlsx"
+print(endPath)
+
+startFile = pd.read_csv(resultPath, sep='\t', lineterminator='\n')
+
+result = startFile.drop([startFile.columns[13], startFile.columns[14], startFile.columns[15],
+                         startFile.columns[16], startFile.columns[17], startFile.columns[18], startFile.columns[19], startFile.columns[20]], axis=1)
+
+result.to_excel(endPath, index=False)
 
 os.chdir(resultDir)
 
