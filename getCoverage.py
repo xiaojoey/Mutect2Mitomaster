@@ -42,17 +42,21 @@ finalArr = []
 dir = sys.argv[1].rstrip('/')
 hapDir = sys.argv[2].rstrip('/')
 
-for filename in os.listdir(dir):
-    editedName = dir + '/' + filename
-    sampleName = editedName.split('/')[-1].split('-')[0]
-    if ".bam" in filename and ".bai" not in filename:
-        command = "samtools depth %s | awk '{sum+=$3} END {print sum}'" % editedName
-        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        resultStr = result.stdout.decode('utf-8')
-        resultNum = (int(resultStr.rstrip()) / 16569)
-        newSample = sample(resultNum, sampleName)
-        sampleArr.append(newSample)
-        # print("The average depth at %s is %s" % (sampleName, resultNum))
+for largeDir in os.listdir(dir):
+    newLargeDir = dir + '/' + largeDir
+    if os.path.isdir(newLargeDir):
+        for filename in os.listdir(newLargeDir):
+            editedName = newLargeDir + '/' + filename
+            sampleName = editedName.split('/')[-1].split('-')[0]
+            if ".bam" in filename and ".bai" not in filename:
+                command = "samtools depth %s | awk '{sum+=$3} END {print sum}'" % editedName
+                result = subprocess.run(command, shell=True,
+                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                resultStr = result.stdout.decode('utf-8')
+                resultNum = (int(resultStr.rstrip()) / 16569)
+                newSample = sample(resultNum, sampleName)
+                sampleArr.append(newSample)
+                # print("The average depth at %s is %s" % (sampleName, resultNum))
 
 for largeDir in os.listdir(hapDir):
     newLargeDir = hapDir + '/' + largeDir
