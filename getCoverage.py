@@ -54,7 +54,9 @@ for largeDir in os.listdir(dir):
                 command = "samtools depth %s | awk '{sum+=$3} END {print sum}'" % editedName
                 result = subprocess.run(command, shell=True,
                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                resultStr = result.stdout.decode('utf-8')
+                resultStr = result.stdout.decode('utf-8'
+		#If pacbio reads use
+		#bedtools genomecov -bg -ibam sampleBam |  awk '{sum+=$4} END { print "Average = ",sum/16569}'
                 resultNum = (int(resultStr.rstrip()) / 16569)
                 newSample = sample(resultNum, sampleName)
                 sampleArr.append(newSample)
@@ -103,6 +105,6 @@ for samp in sampleArr:
 #     print(i.row())
 with open('results.csv', 'w') as f:
     writer = csv.writer(f, dialect='excel')
-    writer.writerow(["Sample Name", "Coverage", "group", "verbose_haplogroup"])
+    writer.writerow(["Sample Name", "mtCoverage", "haplogroup", "verbose_haplogroup"])
     for sample in finalArr:
         writer.writerow(sample.row())
