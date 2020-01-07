@@ -56,7 +56,7 @@ subprocess.call("./gatk Mutect2 -R %s -L chrM --mitochondria-mode true -I %s -O 
 
 print("\tVariants Called")
 
-subprocess.call("./gatk FilterMutectCalls -R %s -min-allele-fraction .05 -V %s -O %s" %
+subprocess.call("./gatk FilterMutectCalls -R %s -min-allele-fraction .05 -V %s -O %s --mitochondria-mode true" %
                 (genomeRef, rawVCF, filteredVCF), shell=True)
 
 print("\tFirst Mutect Filter Done")
