@@ -54,7 +54,7 @@ for largeDir in os.listdir(dir):
                 command = "samtools depth %s | awk '{sum+=$3} END {print sum}'" % editedName
                 result = subprocess.run(command, shell=True,
                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                resultStr = result.stdout.decode('utf-8'
+                resultStr = result.stdout.decode('utf-8')
 		#If pacbio reads use
 		#bedtools genomecov -bg -ibam sampleBam |  awk '{sum+=$4} END { print "Average = ",sum/16569}'
                 resultNum = (int(resultStr.rstrip()) / 16569)
