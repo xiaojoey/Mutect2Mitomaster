@@ -50,7 +50,7 @@ subprocess.call("./gatk AddOrReplaceReadGroups -I %s -R %s -O %s -LB nextera -PL
 print("\tAddOrReplaceReadGroups Done")
 
 
-subprocess.call("./gatk Mutect2 -R %s -L chrM --mitochondria-mode true -I %s -O %s" %
+subprocess.call("./gatk Mutect2 -R %s -L chrM --min-base-quality-score 20 --mitochondria-mode true -I %s -O %s" %
                 (genomeRef, rgBam, rawVCF), shell=True)
 
 
@@ -85,13 +85,14 @@ print("\tconsensus generated")
 resultPath = "%s/%s_report.txt" % (resultDir, sampleName)
 result = open(resultPath, "w")
 try:
-    response = requests.post("https://mitomap.org/mitomaster/websrvc.cgi", files={"file": open(
+    response = requests.post("https://mitomap.org/mitomaster/websrvc.cgi", verify=False, files={"file": open(
         consensusFasta), 'fileType': ('', 'sequences'), 'output': ('', 'detail')})
     print(str(response.content, 'utf-8'))
     result.write(str(response.content, 'utf-8'))
 except requests.exceptions.HTTPError as err:
     print("HTTP error: " + err)
-except:
+except Exception as inst:
+    print(inst)
     print("Error")
 result.close()
 
