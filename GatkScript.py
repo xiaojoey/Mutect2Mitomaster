@@ -84,6 +84,7 @@ print("\tconsensus generated")
 
 resultPath = "%s/%s_report.txt" % (resultDir, sampleName)
 result = open(resultPath, "w")
+# maybe turn verify on eventually
 try:
     response = requests.post("https://mitomap.org/mitomaster/websrvc.cgi", verify=False, files={"file": open(
         consensusFasta), 'fileType': ('', 'sequences'), 'output': ('', 'detail')})
