@@ -1,4 +1,11 @@
 # Mutect2Mitomaster
+
+### Original Publication:
+
+Yang, Z., Slone, J., Wang, X., Zhan, J., Huang, Y., Namjou, B., Kaufman, K. M., Pauciulo, M., Harley, J. B., Muglia, L. J., Chepelev, I., & Huang, T. (2021). Validation of low-coverage whole-genome sequencing for mitochondrial DNA variants suggests mitochondrial DNA as a genetic cause of preterm birth. Human Mutation, 42, 1602– 1614. https://doi.org/10.1002/humu.24279
+
+## Quick Summary
+
 For variant calling, consensus generation, and mitomaster report.
 
 This scripts takes aligned bam files and uses Mutect2 to do variant calling on each file. It generates a VCF with all variants and a VCF with variants above 5%. A consensus sequence is created based on the filtered VCF and is uploaded to Mitomaster. A report from Mitomaster is saved in the results folder.
