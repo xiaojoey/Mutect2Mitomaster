@@ -1,2 +1,6 @@
 **/.DS_Store
 **/Validation/
+*.docx
+*.csv
+*.xlsx
+*.rhistory
